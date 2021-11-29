@@ -1,0 +1,369 @@
+---
+- hosts: localhost
+  name: Delete NSX-T 3.0 Edge Nodes
+  gather_facts: false
+  vars_files: ../answerfile.yml
+
+  tasks:
+    - name: Delete NSX-T 3.0 Edge Nodes - EDGE 01
+      nsxt_transport_nodes:
+        hostname: "{{ nsxt_hostname }}.{{ domain }}"
+        username: "{{ nsxt_admin_user }}"
+        password: "{{ nsxt_password }}"
+        validate_certs: "{{ nsxt_validate_certs }}"
+        display_name: "{{ nsxt_edge_01_name }}" # TO UPDATE
+        description: "Edge transport node"
+        host_switch_spec:
+          resource_type: "StandardHostSwitchSpec"
+          host_switches:
+          - host_switch_profiles:
+            - name: "UP-Edge"
+              type: "UplinkHostSwitchProfile"
+            host_switch_name: "EDGE-NVDS"
+            host_switch_mode: "STANDARD"
+            host_switch_type: "NVDS"
+            pnics:
+            - device_name: "fp-eth0"
+              uplink_name: "uplink-1"
+            - device_name: "fp-eth1"
+              uplink_name: "uplink-2" 
+            ip_assignment_spec:
+              resource_type: "StaticIpPoolSpec"
+              ip_pool_name: "{{ nsxt_ippool_tep_edge }}"
+            transport_zone_endpoints:
+              - transport_zone_name: "{{ nsxt_transportzone_overlay_display_name }}"
+              - transport_zone_name: "{{ nsxt_transportzone_vlan_display_name }}"
+        node_deployment_info:
+            resource_type: "EdgeNode"
+            display_name: "{{ nsxt_edge_01_display_name }}"  # TO UPDATE
+            ip_addresses:
+            deployment_config:
+              form_factor: "MEDIUM"
+              node_user_settings:
+                cli_password: "{{ vcenter_password }}"
+                root_password: "{{ vcenter_password }}"
+              vm_deployment_config:
+                allow_ssh_root_login: true
+                enable_ssh: true
+                placement_type: VsphereDeploymentConfig
+                vc_name: "vCenter"
+                vc_username: "{{ vcenter_username }}"
+                vc_password: "{{ vcenter_password }}"        
+                data_networks:
+                - "{{ nsxt_edge_data_networks_TOR_01 }}"
+                - "{{ nsxt_edge_data_networks_TOR_02 }}"
+                management_network: "{{ nsxt_edge_DPG_management }}"
+                management_port_subnets:
+                - ip_addresses:
+                  - "{{ nsxt_edge_01_ip }}" # TO UPDATE
+                  prefix_length: 24
+                default_gateway_addresses:
+                  - "{{ nsxt_edge_gateway }}"
+                hostname: "{{ nsxt_edge_01_display_name }}"   # TO UPDATE
+                compute: "{{ cluster_name_edge }}"
+                storage: "{{ datastore }}"
+                host: "{{ esxi_mgmt_01_fqdn }}"
+        state: absent
+
+    - name: Delete NSX-T 3.0 Edge Nodes - EDGE 02
+      nsxt_transport_nodes:
+        hostname: "{{ nsxt_hostname }}.{{ domain }}"
+        username: "{{ nsxt_admin_user }}"
+        password: "{{ nsxt_password }}"
+        validate_certs: "{{ nsxt_validate_certs }}"
+        display_name: "{{ nsxt_edge_02_name }}" # TO UPDATE
+        description: "Edge transport node"
+        host_switch_spec:
+          resource_type: "StandardHostSwitchSpec"
+          host_switches:
+          - host_switch_profiles:
+            - name: "UP-Edge"
+              type: "UplinkHostSwitchProfile"
+            host_switch_name: "EDGE-NVDS"
+            host_switch_mode: "STANDARD"
+            host_switch_type: "NVDS"
+            pnics:
+            - device_name: "fp-eth0"
+              uplink_name: "uplink-1"
+            - device_name: "fp-eth1"
+              uplink_name: "uplink-2" 
+            ip_assignment_spec:
+              resource_type: "StaticIpPoolSpec"
+              ip_pool_name: "{{ nsxt_ippool_tep_edge }}"
+            transport_zone_endpoints:
+              - transport_zone_name: "{{ nsxt_transportzone_overlay_display_name }}"
+              - transport_zone_name: "{{ nsxt_transportzone_vlan_display_name }}"
+        node_deployment_info:
+            resource_type: "EdgeNode"
+            display_name: "{{ nsxt_edge_02_display_name }}"  # TO UPDATE
+            ip_addresses:
+            deployment_config:
+              form_factor: "MEDIUM"
+              node_user_settings:
+                cli_password: "{{ vcenter_password }}"
+                root_password: "{{ vcenter_password }}"
+              vm_deployment_config:
+                allow_ssh_root_login: true
+                enable_ssh: true                
+                placement_type: VsphereDeploymentConfig
+                vc_name: "vCenter"
+                vc_username: "{{ vcenter_username }}"
+                vc_password: "{{ vcenter_password }}"        
+                data_networks:
+                - "{{ nsxt_edge_data_networks_TOR_01 }}"
+                - "{{ nsxt_edge_data_networks_TOR_02 }}"
+                management_network: "{{ nsxt_edge_DPG_management }}"
+                management_port_subnets:
+                - ip_addresses:
+                  - "{{ nsxt_edge_02_ip }}" # TO UPDATE
+                  prefix_length: 24
+                default_gateway_addresses:
+                  - "{{ nsxt_edge_gateway }}"
+                hostname: "{{ nsxt_edge_02_display_name }}"   # TO UPDATE
+                compute: "{{ cluster_name_edge }}"
+                storage: "{{ datastore }}"
+                host: "{{ esxi_mgmt_01_fqdn }}"
+        state: absent
+
+
+    - name: Delete NSX-T 3.0 Edge Nodes - EDGE 03
+      nsxt_transport_nodes:
+        hostname: "{{ nsxt_hostname }}.{{ domain }}"
+        username: "{{ nsxt_admin_user }}"
+        password: "{{ nsxt_password }}"
+        validate_certs: "{{ nsxt_validate_certs }}"
+        display_name: "{{ nsxt_edge_03_name }}" # TO UPDATE
+        description: "Edge transport node"
+        host_switch_spec:
+          resource_type: "StandardHostSwitchSpec"
+          host_switches:
+          - host_switch_profiles:
+            - name: "UP-Edge"
+              type: "UplinkHostSwitchProfile"
+            host_switch_name: "EDGE-NVDS"
+            host_switch_mode: "STANDARD"
+            host_switch_type: "NVDS"
+            pnics:
+            - device_name: "fp-eth0"
+              uplink_name: "uplink-1"
+            - device_name: "fp-eth1"
+              uplink_name: "uplink-2" 
+            ip_assignment_spec:
+              resource_type: "StaticIpPoolSpec"
+              ip_pool_name: "{{ nsxt_ippool_tep_edge }}"
+            transport_zone_endpoints:
+              - transport_zone_name: "{{ nsxt_transportzone_overlay_display_name }}"
+              - transport_zone_name: "{{ nsxt_transportzone_vlan_display_name }}"
+        node_deployment_info:
+            resource_type: "EdgeNode"
+            display_name: "{{ nsxt_edge_03_display_name }}"  # TO UPDATE
+            ip_addresses:
+            deployment_config:
+              form_factor: "MEDIUM"
+              node_user_settings:
+                cli_password: "{{ vcenter_password }}"
+                root_password: "{{ vcenter_password }}"
+              vm_deployment_config:
+                allow_ssh_root_login: true
+                enable_ssh: true
+                placement_type: VsphereDeploymentConfig
+                vc_name: "vCenter"
+                vc_username: "{{ vcenter_username }}"
+                vc_password: "{{ vcenter_password }}"        
+                data_networks:
+                - "{{ nsxt_edge_data_networks_TOR_01 }}"
+                - "{{ nsxt_edge_data_networks_TOR_02 }}"
+                management_network: "{{ nsxt_edge_DPG_management }}"
+                management_port_subnets:
+                - ip_addresses:
+                  - "{{ nsxt_edge_03_ip }}" # TO UPDATE
+                  prefix_length: 24
+                default_gateway_addresses:
+                  - "{{ nsxt_edge_gateway }}"
+                hostname: "{{ nsxt_edge_03_display_name }}"   # TO UPDATE
+                compute: "{{ cluster_name_edge }}"
+                storage: "{{ datastore }}"
+                host: "{{ esxi_mgmt_01_fqdn }}"
+        state: absent
+
+
+    - name: Delete NSX-T 3.0 Edge Nodes - EDGE 04
+      nsxt_transport_nodes:
+        hostname: "{{ nsxt_hostname }}.{{ domain }}"
+        username: "{{ nsxt_admin_user }}"
+        password: "{{ nsxt_password }}"
+        validate_certs: "{{ nsxt_validate_certs }}"
+        display_name: "{{ nsxt_edge_04_name }}" # TO UPDATE
+        description: "Edge transport node"
+        host_switch_spec:
+          resource_type: "StandardHostSwitchSpec"
+          host_switches:
+          - host_switch_profiles:
+            - name: "UP-Edge"
+              type: "UplinkHostSwitchProfile"
+            host_switch_name: "EDGE-NVDS"
+            host_switch_mode: "STANDARD"
+            host_switch_type: "NVDS"
+            pnics:
+            - device_name: "fp-eth0"
+              uplink_name: "uplink-1"
+            - device_name: "fp-eth1"
+              uplink_name: "uplink-2" 
+            ip_assignment_spec:
+              resource_type: "StaticIpPoolSpec"
+              ip_pool_name: "{{ nsxt_ippool_tep_edge }}"
+            transport_zone_endpoints:
+              - transport_zone_name: "{{ nsxt_transportzone_overlay_display_name }}"
+              - transport_zone_name: "{{ nsxt_transportzone_vlan_display_name }}"
+        node_deployment_info:
+            resource_type: "EdgeNode"
+            display_name: "{{ nsxt_edge_04_display_name }}"  # TO UPDATE
+            ip_addresses:
+            deployment_config:
+              form_factor: "MEDIUM"
+              node_user_settings:
+                cli_password: "{{ vcenter_password }}"
+                root_password: "{{ vcenter_password }}"
+              vm_deployment_config:
+                allow_ssh_root_login: true
+                enable_ssh: true
+                placement_type: VsphereDeploymentConfig
+                vc_name: "vCenter"
+                vc_username: "{{ vcenter_username }}"
+                vc_password: "{{ vcenter_password }}"        
+                data_networks:
+                - "{{ nsxt_edge_data_networks_TOR_01 }}"
+                - "{{ nsxt_edge_data_networks_TOR_02 }}"
+                management_network: "{{ nsxt_edge_DPG_management }}"
+                management_port_subnets:
+                - ip_addresses:
+                  - "{{ nsxt_edge_04_ip }}" # TO UPDATE
+                  prefix_length: 24
+                default_gateway_addresses:
+                  - "{{ nsxt_edge_gateway }}"
+                hostname: "{{ nsxt_edge_04_display_name }}"   # TO UPDATE
+                compute: "{{ cluster_name_edge }}"
+                storage: "{{ datastore }}"
+                host: "{{ esxi_mgmt_01_fqdn }}"
+        state: absent
+
+
+    - name: Delete NSX-T 3.0 Edge Nodes - EDGE 05
+      nsxt_transport_nodes:
+        hostname: "{{ nsxt_hostname }}.{{ domain }}"
+        username: "{{ nsxt_admin_user }}"
+        password: "{{ nsxt_password }}"
+        validate_certs: "{{ nsxt_validate_certs }}"
+        display_name: "{{ nsxt_edge_05_name }}" # TO UPDATE
+        description: "Edge transport node"
+        host_switch_spec:
+          resource_type: "StandardHostSwitchSpec"
+          host_switches:
+          - host_switch_profiles:
+            - name: "UP-Edge"
+              type: "UplinkHostSwitchProfile"
+            host_switch_name: "EDGE-NVDS"
+            host_switch_mode: "STANDARD"
+            host_switch_type: "NVDS"
+            pnics:
+            - device_name: "fp-eth0"
+              uplink_name: "uplink-1"
+            - device_name: "fp-eth1"
+              uplink_name: "uplink-2" 
+            ip_assignment_spec:
+              resource_type: "StaticIpPoolSpec"
+              ip_pool_name: "{{ nsxt_ippool_tep_edge }}"
+            transport_zone_endpoints:
+              - transport_zone_name: "{{ nsxt_transportzone_overlay_display_name }}"
+              - transport_zone_name: "{{ nsxt_transportzone_vlan_display_name }}"
+        node_deployment_info:
+            resource_type: "EdgeNode"
+            display_name: "{{ nsxt_edge_05_display_name }}"  # TO UPDATE
+            ip_addresses:
+            deployment_config:
+              form_factor: "MEDIUM"
+              node_user_settings:
+                cli_password: "{{ vcenter_password }}"
+                root_password: "{{ vcenter_password }}"            
+              vm_deployment_config:
+                allow_ssh_root_login: true
+                enable_ssh: true
+                placement_type: VsphereDeploymentConfig
+                vc_name: "vCenter"
+                vc_username: "{{ vcenter_username }}"
+                vc_password: "{{ vcenter_password }}"        
+                data_networks:
+                - "{{ nsxt_edge_data_networks_TOR_01 }}"
+                - "{{ nsxt_edge_data_networks_TOR_02 }}"
+                management_network: "{{ nsxt_edge_DPG_management }}"
+                management_port_subnets:
+                - ip_addresses:
+                  - "{{ nsxt_edge_05_ip }}" # TO UPDATE
+                  prefix_length: 24
+                default_gateway_addresses:
+                  - "{{ nsxt_edge_gateway }}"
+                hostname: "{{ nsxt_edge_05_display_name }}"   # TO UPDATE
+                compute: "{{ cluster_name_edge }}"
+                storage: "{{ datastore }}"
+                host: "{{ esxi_mgmt_01_fqdn }}"
+        state: absent
+
+    - name: Delete NSX-T 3.0 Edge Nodes - EDGE 06
+      nsxt_transport_nodes:
+        hostname: "{{ nsxt_hostname }}.{{ domain }}"
+        username: "{{ nsxt_admin_user }}"
+        password: "{{ nsxt_password }}"
+        validate_certs: "{{ nsxt_validate_certs }}"
+        display_name: "{{ nsxt_edge_06_name }}" # TO UPDATE
+        description: "Edge transport node"
+        host_switch_spec:
+          resource_type: "StandardHostSwitchSpec"
+          host_switches:
+          - host_switch_profiles:
+            - name: "UP-Edge"
+              type: "UplinkHostSwitchProfile"
+            host_switch_name: "EDGE-NVDS"
+            host_switch_mode: "STANDARD"
+            host_switch_type: "NVDS"
+            pnics:
+            - device_name: "fp-eth0"
+              uplink_name: "uplink-1"
+            - device_name: "fp-eth1"
+              uplink_name: "uplink-2" 
+            ip_assignment_spec:
+              resource_type: "StaticIpPoolSpec"
+              ip_pool_name: "{{ nsxt_ippool_tep_edge }}"
+            transport_zone_endpoints:
+              - transport_zone_name: "{{ nsxt_transportzone_overlay_display_name }}"
+              - transport_zone_name: "{{ nsxt_transportzone_vlan_display_name }}"
+        node_deployment_info:
+            resource_type: "EdgeNode"
+            display_name: "{{ nsxt_edge_06_display_name }}"  # TO UPDATE
+            ip_addresses:
+            deployment_config:
+              form_factor: "MEDIUM"
+              node_user_settings:
+                cli_password: "{{ vcenter_password }}"
+                root_password: "{{ vcenter_password }}"             
+              vm_deployment_config:
+                allow_ssh_root_login: true
+                enable_ssh: true
+                placement_type: VsphereDeploymentConfig
+                vc_name: "vCenter"
+                vc_username: "{{ vcenter_username }}"
+                vc_password: "{{ vcenter_password }}"        
+                data_networks:
+                - "{{ nsxt_edge_data_networks_TOR_01 }}"
+                - "{{ nsxt_edge_data_networks_TOR_02 }}"
+                management_network: "{{ nsxt_edge_DPG_management }}"
+                management_port_subnets:
+                - ip_addresses:
+                  - "{{ nsxt_edge_06_ip }}" # TO UPDATE
+                  prefix_length: 24
+                default_gateway_addresses:
+                  - "{{ nsxt_edge_gateway }}"
+                hostname: "{{ nsxt_edge_06_display_name }}"   # TO UPDATE
+                compute: "{{ cluster_name_edge }}"
+                storage: "{{ datastore }}"
+                host: "{{ esxi_mgmt_01_fqdn }}"
+        state: absent

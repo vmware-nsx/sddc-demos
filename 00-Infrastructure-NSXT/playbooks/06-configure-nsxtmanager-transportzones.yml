@@ -1,0 +1,33 @@
+---
+- hosts: localhost
+  name: Create NSX-T Transport Zones
+  gather_facts: false
+  vars_files: ../answerfile.yml
+
+  tasks:
+    - name: Create NSX-T Transport zone - OVERLAY 
+      nsxt_transport_zones:
+          hostname: "{{ nsxt_hostname }}.{{ domain }}"
+          username: "{{ nsxt_admin_user }}"
+          password: "{{ nsxt_password }}"
+          validate_certs: "{{ nsxt_validate_certs }}"
+          resource_type: "TransportZone"
+          display_name: "{{ nsxt_transportzone_overlay_display_name }}"
+          description: "Ansible provisionned - Transport Zone - Overlay"
+          transport_type: "OVERLAY"
+          # host_switch_mode: "STANDARD" => PRE 3.2
+          state: "present"
+
+    - name: Create NSX-T Transport zone - VLAN 
+      nsxt_transport_zones:
+          hostname: "{{ nsxt_hostname }}.{{ domain }}"
+          username: "{{ nsxt_admin_user }}"
+          password: "{{ nsxt_password }}"
+          validate_certs: "{{ nsxt_validate_certs }}"
+          resource_type: "TransportZone"
+          display_name: "{{ nsxt_transportzone_vlan_display_name }}"
+          description: "Ansible provisionned - Transport Zone - Vlan"
+          transport_type: "VLAN"
+          #host_switch_mode: "STANDARD" => PRE 3.2
+          uplink_teaming_policy_names: "{{ nsxt_uplink_teaming_policies }}"
+          state: "present"

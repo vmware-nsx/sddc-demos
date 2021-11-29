@@ -1,0 +1,21 @@
+---
+- hosts: localhost
+  name: DEPLOYING NSX-T INFRASTRUCTURE
+  gather_facts: false
+  vars_files: answerfile.yml
+
+
+# Infrastructure Deployment # 
+
+- import_playbook: playbooks/03-configure-nsxtmanager-license.yml
+- import_playbook: playbooks/04-configure-nsxtmanager-uplinkprofiles.yml
+- import_playbook: playbooks/05-configure-nsxtmanager-ippools.yml
+- import_playbook: playbooks/06-configure-nsxtmanager-transportzones.yml
+- import_playbook: playbooks/07-configure-nsxtmanager-transportnodesprofiles.yml
+- import_playbook: playbooks/08-configure-nsxtmanager-transportnodes.yml
+#- import_playbook: playbooks/09-deploy-edgenodes.yml
+#- import_playbook: playbooks/10-configure-nsxtmanager-edgeclusters.yml
+#- import_playbook: playbooks/11-deploy-cumulus.yml
+#- import_playbook: playbooks/09-deploy-edgenodes.yml
+#- import_playbook: playbooks/10-configure-nsxtmanager-edgeclusters.yml
+#- import_playbook: playbooks/11-deploy-cumulus.yml

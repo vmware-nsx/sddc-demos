@@ -1,0 +1,52 @@
+---
+- hosts: localhost
+  name: Delete Transport Nodes
+  gather_facts: false
+  vars_files: ../answerfile.yml
+
+  tasks:
+    - name: Delete NSX-T 3.0 transport Nodes - COMPUTE - ESXI 02-
+      nsxt_transport_nodes:
+          hostname: "{{ nsxt_hostname }}.{{ domain }}"
+          username: "{{ nsxt_admin_user }}"
+          password: "{{ nsxt_password }}"
+          validate_certs: "{{ nsxt_validate_certs }}"
+          #resource_type: "TransportNode"
+          display_name: "{{ nsxt_transportnode_esxi02 }}"
+          description: "Ansible provisionned - Transport Zone - Overlay"
+          #host_switch_spec:
+          #  resource_type: "StandardHostSwitchSpec"
+          #host_switches:
+          #  - host_switch_profiles:
+          #    - name: "TNP-Compute"
+          #     type: "UplinkHostSwitchProfile"   
+          node_deployment_info:
+            resource_type: "HostNode"
+            display_name: "{{ nsxt_transportnode_esxi02 }}"
+            ip_addresses: ["{{ nsxt_transportnode_esxi02_ip }}"]
+            os_type: "ESXI"
+            #os_version: "6.5.0"
+          state: "absent"
+
+    - name: Delete NSX-T 3.0 transport Nodes - COMPUTE - ESXI 03-
+      nsxt_transport_nodes:
+          hostname: "{{ nsxt_hostname }}.{{ domain }}"
+          username: "{{ nsxt_admin_user }}"
+          password: "{{ nsxt_password }}"
+          validate_certs: "{{ nsxt_validate_certs }}"
+          #resource_type: "TransportNode"
+          display_name: "{{ nsxt_transportnode_esxi03 }}"
+          description: "Ansible provisionned - Transport Zone - Overlay"
+          #host_switch_spec:
+          #  resource_type: "StandardHostSwitchSpec"
+          #host_switches:
+          #  - host_switch_profiles:
+          #    - name: "TNP-Compute"
+          #     type: "UplinkHostSwitchProfile"   
+          node_deployment_info:
+            resource_type: "HostNode"
+            display_name: "{{ nsxt_transportnode_esxi03 }}"
+            ip_addresses: ["{{ nsxt_transportnode_esxi03_ip }}"]
+            os_type: "ESXI"
+            #os_version: "6.5.0"
+          state: "absent"

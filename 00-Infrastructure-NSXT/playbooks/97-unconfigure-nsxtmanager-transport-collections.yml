@@ -1,0 +1,24 @@
+---
+- hosts: localhost
+  name: Delete transport node collection - NSXT
+  gather_facts: false
+  vars_files: ../answerfile.yml
+
+  tasks:
+    - name: Delete transport node collection
+      nsxt_transport_node_collections:
+        hostname: "{{ nsxt_hostname }}.{{ domain }}"
+        username: "{{ nsxt_admin_user }}"
+        password: "{{ nsxt_password }}"
+        validate_certs: "{{ nsxt_validate_certs }}"
+        display_name: "TNC1"
+        resource_type: "TransportNodeCollection"
+        description: "Transport Node Collections 1"
+        compute_manager_name: "vCenter"
+        cluster_name: "{{ cluster_name_compute }}"
+        transport_node_profile_name: "{{ nsxt_transportnode_profile_name }}"
+        state: absent
+
+    #- name: Pause a little bit to allow the transport nodes to clear all the vibs
+    #  pause: 
+    #    minutes: 10

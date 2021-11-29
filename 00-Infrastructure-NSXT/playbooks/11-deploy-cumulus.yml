@@ -1,0 +1,87 @@
+---
+- hosts: localhost
+  name: Deploy Cumulus VX
+  gather_facts: false
+  vars_files: ../answerfile.yml
+
+  tasks:
+    - vmware_deploy_ovf:
+        hostname: "{{ vcenter_hostname }}.{{ domain }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        name: "{{ vx_01_virtual_machine_name }}" # Virtual Machine name in ESXI, not FQDN
+        ovf: "{{ vx_ova_file }}"
+        wait_for_ip_address: false
+        validate_certs: no
+        inject_ovf_env: false
+        power_on: yes
+        datastore: "{{ datastore }}"
+        datacenter: "{{ nsxt_datacenter }}"
+        cluster: "{{ vcenter_cluster }}"
+        networks: 
+          "VM Network": "{{ vx_management_port_group }}"
+      delegate_to: localhost
+    - vmware_deploy_ovf:
+        hostname: "{{ vcenter_hostname }}.{{ domain }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        name: "{{ vx_02_virtual_machine_name }}" # Virtual Machine name in ESXI, not FQDN
+        ovf: "{{ vx_ova_file }}"
+        wait_for_ip_address: false
+        validate_certs: no
+        inject_ovf_env: false
+        power_on: yes
+        datastore: "{{ datastore }}"
+        datacenter: "{{ nsxt_datacenter }}"
+        cluster: "{{ vcenter_cluster }}"
+        networks: 
+          "VM Network": "{{ vx_management_port_group }}"
+      delegate_to: localhost
+    - vmware_deploy_ovf:
+        hostname: "{{ vcenter_hostname }}.{{ domain }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        name: "{{ vx_03_virtual_machine_name }}" # Virtual Machine name in ESXI, not FQDN
+        ovf: "{{ vx_ova_file }}"
+        wait_for_ip_address: false
+        validate_certs: no
+        inject_ovf_env: false
+        power_on: yes
+        datastore: "{{ datastore }}"
+        datacenter: "{{ nsxt_datacenter }}"
+        cluster: "{{ vcenter_cluster }}"
+        networks: 
+          "VM Network": "{{ vx_management_port_group }}"
+      delegate_to: localhost
+    - vmware_deploy_ovf:
+        hostname: "{{ vcenter_hostname }}.{{ domain }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        name: "{{ vx_04_virtual_machine_name }}" # Virtual Machine name in ESXI, not FQDN
+        ovf: "{{ vx_ova_file }}"
+        wait_for_ip_address: false
+        validate_certs: no
+        inject_ovf_env: false
+        power_on: yes
+        datastore: "{{ datastore }}"
+        datacenter: "{{ nsxt_datacenter }}"
+        cluster: "{{ vcenter_cluster }}"
+        networks: 
+          "VM Network": "{{ vx_management_port_group }}"
+      delegate_to: localhost
+    - vmware_deploy_ovf:
+        hostname: "{{ vcenter_hostname }}.{{ domain }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        name: "{{ vx_spine_virtual_machine_name }}" # Virtual Machine name in ESXI, not FQDN
+        ovf: "{{ vx_ova_file }}"
+        wait_for_ip_address: false
+        validate_certs: no
+        inject_ovf_env: false
+        power_on: yes
+        datastore: "{{ datastore }}"
+        datacenter: "{{ nsxt_datacenter }}"
+        cluster: "{{ vcenter_cluster }}"
+        networks: 
+          "VM Network": "{{ vx_management_port_group }}"
+      delegate_to: localhost

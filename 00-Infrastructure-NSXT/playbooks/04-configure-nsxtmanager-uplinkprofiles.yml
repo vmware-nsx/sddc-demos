@@ -1,0 +1,59 @@
+---
+- hosts: localhost
+  name: Create NSX-T Uplink profiles (Compute - Edge)
+  gather_facts: false
+  vars_files: ../answerfile.yml
+
+  tasks:
+    - name: Create a Hostswitch Profile - COMPUTE
+      nsxt_uplink_profiles:
+          hostname: "{{ nsxt_hostname }}.{{ domain }}"
+          username: "{{ nsxt_admin_user }}"
+          password: "{{ nsxt_password }}"
+          validate_certs: "{{ nsxt_validate_certs }}"
+          display_name: "UP-Compute"
+          #mtu: "{{ nsxt_mtu }}"
+          resource_type: "UplinkHostSwitchProfile"
+          teaming:
+            active_list:
+            - uplink_name: "{{ nsxt_teaming_policy_link01 }}"
+              uplink_type: PNIC
+            - uplink_name: "{{ nsxt_teaming_policy_link02 }}"
+              uplink_type: PNIC              
+            policy: LOADBALANCE_SRCID
+          transport_vlan: 110
+          state: "present"
+
+    - name: Create a Hostswitch Profile - EDGE
+      nsxt_uplink_profiles:
+          hostname: "{{ nsxt_hostname }}.{{ domain }}"
+          username: "{{ nsxt_admin_user }}"
+          password: "{{ nsxt_password }}"
+          validate_certs: "{{ nsxt_validate_certs }}"
+          display_name: "UP-Edge"
+          mtu: "{{ nsxt_edge_mtu }}"
+          resource_type: "UplinkHostSwitchProfile"
+          teaming:
+            active_list:
+            - uplink_name: "{{ nsxt_teaming_policy_link01 }}"
+              uplink_type: PNIC
+            - uplink_name: "{{ nsxt_teaming_policy_link02 }}"
+              uplink_type: PNIC                       
+            policy: LOADBALANCE_SRCID  
+          named_teamings:
+          - name: "{{ nsxt_named_teaming_policy_name_01 }}"
+            active_list:
+            - uplink_name: "{{ nsxt_teaming_policy_link01 }}"
+              uplink_type: PNIC
+            policy: "FAILOVER_ORDER"
+          - name: "{{ nsxt_named_teaming_policy_name_02 }}"
+            active_list:
+            - uplink_name: "{{ nsxt_teaming_policy_link02 }}"
+              uplink_type: PNIC
+            policy: "FAILOVER_ORDER"
+          transport_vlan: 120
+          state: "present"
+
+
+
+  

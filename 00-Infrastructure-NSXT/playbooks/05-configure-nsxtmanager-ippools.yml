@@ -1,0 +1,52 @@
+---
+- hosts: localhost
+  name: Create IP Pools
+  gather_facts: false
+  vars_files: ../answerfile.yml
+
+  tasks:
+    - name: Create IP Pool - IPPool-IPV4-TEP-COMPUTE
+      nsxt_policy_ip_pool:
+        hostname: "{{ nsxt_hostname }}.{{ domain }}"
+        username: "{{ nsxt_admin_user }}"
+        password: "{{ nsxt_password }}"
+        validate_certs: "{{ nsxt_validate_certs }}"
+        #id: test-ip-pool
+        display_name: IPPool-IPV4-TEP-COMPUTE
+        description: "Ansible provisionned - IP Pool - TEP Compute"
+        state: "present"
+        tags:
+        - tag: "a"
+          scope: "b"
+        pool_static_subnets:
+          - id: IPPool-IPV4-TEP-COMPUTE
+            state: present
+            allocation_ranges:
+              - start: '172.31.110.10'
+                end: '172.31.110.254'
+            cidr: '172.31.110.0/24'
+            gateway_ip: '172.31.110.1'
+
+    - name: Create IP Pool - IPPool-IPV4-TEP-EDGE
+      nsxt_policy_ip_pool:
+        hostname: "{{ nsxt_hostname }}.{{ domain }}"
+        username: "{{ nsxt_admin_user }}"
+        password: "{{ nsxt_password }}"
+        validate_certs: "{{ nsxt_validate_certs }}"
+        #id: test-ip-pool
+        display_name: IPPool-IPV4-TEP-EDGE
+        description: "Ansible provisionned - IP Pool - TEP Edge"
+        state: "present"
+        tags:
+        - tag: "a"
+          scope: "b"
+        pool_static_subnets:
+          - id: IPPool-IPV4-TEP-EDGE
+            state: present
+            allocation_ranges:
+              - start: '172.31.120.10'
+                end: '172.31.120.254'
+            cidr: '172.31.120.0/24'
+            gateway_ip: '172.31.120.1'
+
+

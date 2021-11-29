@@ -1,0 +1,56 @@
+---
+- hosts: localhost
+  name: Deploy NSX-T Manager
+  gather_facts: false
+  vars_files: ../answerfile.yml
+
+  tasks:
+    - vmware_deploy_ovf:
+        hostname: "{{ vcenter_hostname }}.{{ domain }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        name: "{{ nsxt_virtual_machine_name }}" # Virtual Machine name in ESXI, not FQDN
+        ovf: "{{ nsxt_ova_file }}"
+        wait_for_ip_address: true
+        validate_certs: no
+        inject_ovf_env: true
+        power_on: yes
+        datastore: "{{ datastore }}"
+        datacenter: "{{ nsxt_datacenter }}"
+        cluster: "{{ vcenter_cluster }}"
+        deployment_option: "{{ nsxt_ova_size }}"
+        networks: 
+          "Network 1": "{{ nsxt_port_group }}"
+        properties:
+          nsx_allowSSHRootLogin: yes
+          nsx_cli_audit_passwd_0: "{{ nsxt_password }}"
+          nsx_cli_audit_username: "{{ nsxt_audit_user }}"
+          nsx_cli_passwd_0: "{{ nsxt_password }}"
+          nsx_cli_username: "{{ nsxt_admin_user }}"
+          nsx_dns1_0: "{{ vcenter_dns_servers }}"
+          nsx_domain_0: "{{ domain }}"
+          nsx_gateway_0: "{{ nsxt_gateway }}"
+          nsx_hostname: "{{ nsxt_hostname }}"
+          nsx_ip_0: "{{ nsxt_ip_address }}"
+          nsx_isSSHEnabled: True
+          nsx_netmask_0: "{{ nsxt_netmask }}"
+          nsx_ntp_0: "{{ nsxt_ntp_server }}"
+          nsx_passwd_0: "{{ nsxt_password }}"
+          nsx_role: "{{ nsxt_role }}"
+      delegate_to: localhost
+
+
+##### Container has issue with Traffic sent directly to
+#    - name: Check manager status
+#      nsxt_manager_status:
+#          hostname: "172.31.100.100"
+#          username: "{{ nsxt_admin_user }}"
+#          password: "{{ nsxt_password }}"
+#          validate_certs: "{{ nsxt_validate_certs }}"
+#          wait_time: 10
+#    
+    - name: Pause a little bit
+      pause: 
+        minutes: 15
+      
+

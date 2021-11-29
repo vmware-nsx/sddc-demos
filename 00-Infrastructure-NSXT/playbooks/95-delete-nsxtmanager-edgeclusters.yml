@@ -1,0 +1,55 @@
+---
+- hosts: localhost
+  name: Delete NSX-T Manager Edge Cluster
+  gather_facts: false
+  vars_files: ../answerfile.yml
+
+  tasks:
+    - name: Delete Edge Cluster - 01
+      nsxt_edge_clusters:
+        hostname: "{{ nsxt_hostname }}.{{ domain }}"
+        username: "{{ nsxt_admin_user }}"
+        password: "{{ nsxt_password }}"
+        validate_certs: "{{ nsxt_validate_certs }}"
+        description: "Ansible provisionned - Edge Cluster"
+        display_name: "{{ nsxt_edge_cluster_01 }}"
+        #cluster_profile_bindings:
+        #  - profile_name: "nsx-edge-profile"
+        #    resource_type: EdgeHighAvailabilityProfile
+        members:
+          - transport_node_name: "{{ nsxt_edge_01_name }}"
+          - transport_node_name: "{{ nsxt_edge_02_name }}"          
+        state: absent
+
+    - name: Delete Edge Cluster - 02
+      nsxt_edge_clusters:
+        hostname: "{{ nsxt_hostname }}.{{ domain }}"
+        username: "{{ nsxt_admin_user }}"
+        password: "{{ nsxt_password }}"
+        validate_certs: "{{ nsxt_validate_certs }}"
+        display_name: "{{ nsxt_edge_cluster_02 }}"
+        description: "Ansible provisionned - Edge Cluster"
+
+        #cluster_profile_bindings:
+        #  - profile_name: "nsx-edge-profile"
+        #    resource_type: EdgeHighAvailabilityProfile
+        members:
+          - transport_node_name: "{{ nsxt_edge_03_name }}"
+          - transport_node_name: "{{ nsxt_edge_04_name }}"          
+        state: absent
+
+    - name: Delete Edge Cluster - 03
+      nsxt_edge_clusters:
+        hostname: "{{ nsxt_hostname }}.{{ domain }}"
+        username: "{{ nsxt_admin_user }}"
+        password: "{{ nsxt_password }}"
+        validate_certs: "{{ nsxt_validate_certs }}"
+        display_name: "{{ nsxt_edge_cluster_03 }}"
+        description: "Ansible provisionned - Edge Cluster"
+        #cluster_profile_bindings:
+        #  - profile_name: "nsx-edge-profile"
+        #    resource_type: EdgeHighAvailabilityProfile
+        members:
+          - transport_node_name: "{{ nsxt_edge_05_name }}"
+          - transport_node_name: "{{ nsxt_edge_06_name }}"          
+        state: absent

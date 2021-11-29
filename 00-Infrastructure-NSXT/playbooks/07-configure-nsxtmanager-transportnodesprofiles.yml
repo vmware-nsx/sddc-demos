@@ -1,0 +1,36 @@
+---
+- hosts: localhost
+  name: Create NSX-T Transport Nodes Profiles
+  gather_facts: false
+  vars_files: ../answerfile.yml
+
+  tasks:
+    - name: Create Transport Node Profile - COMPUTE
+      nsxt_transport_node_profiles:
+        hostname: "{{ nsxt_hostname }}.{{ domain }}"
+        username: "{{ nsxt_admin_user }}"
+        password: "{{ nsxt_password }}"
+        validate_certs: "{{ nsxt_validate_certs }}"
+        resource_type: "TransportNodeProfile"
+        display_name: "{{ nsxt_transportnode_profile_name }}"
+        description: "Ansible provisionned - Uplink Profile  - Compute"
+        host_switch_spec:
+          resource_type: "StandardHostSwitchSpec"
+          host_switches:
+          - host_switch_profiles:
+            - name: "UP-Compute"
+              type: "UplinkHostSwitchProfile"
+            host_switch_name: "{{ vds_name }}"
+            host_switch_mode: "STANDARD"
+            host_switch_type: VDS            
+            uplinks:
+            - uplink_name: "uplink-1"
+              vds_uplink_name: "Uplink 1"
+            - uplink_name: "uplink-2"
+              vds_uplink_name: "Uplink 2"             
+            ip_assignment_spec:
+              resource_type: "StaticIpPoolSpec"
+              ip_pool_name: "{{ nsxt_ippool_tep_compute }}"
+            transport_zone_endpoints:
+            - transport_zone_name: "{{ nsxt_transportzone_overlay_display_name }}"
+        state: "present"
