@@ -1,4 +1,4 @@
-# VMware NSX-T TPM Team - Deploy NSX-T Infrastructure - Simple Topology
+# Deploy NSX-T Infrastructure - Simple Topology
 
 
 
@@ -34,7 +34,7 @@ ____
 
 This topology will be used in this particular example:
 
-![BGP P2P Topology](http://url/to/img.png)
+![BGP P2P Topology](https://github.com/vmware-nsx/sddc-demos/blob/main/02-Deploy-NSXT-Topologies/01-BGP-P2P/NSX-T%20BGP%20P2P%20Topology.png)
 
 #### Simple Topology
 
