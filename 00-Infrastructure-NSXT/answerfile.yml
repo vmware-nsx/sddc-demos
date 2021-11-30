@@ -1,0 +1,125 @@
+# Variables to be used for an automated NSX-T Deployment. #
+
+# Ansibe Variable 
+state_absent: " "
+state_present: " "
+
+## ESXI and vCenter VARIABLES - INFRASTRUCTURE ##
+esxi_username: ' '
+esxi_ip_address: ' '
+esxi_infrastructure_fqdn: ' '
+esxi_mgmt_01_fqdn: ' '
+esxi_compute_01_fqdn: ' '
+esxi_compute_02_fqdn: ' '
+vcenter_username: ' '
+vcenter_password: ' '
+vcenter_virtual_machine_name: ' '
+vcenter_hostname: ' '
+vcenter_net_ip_address: ' '
+vcenter_net_prefix: ' '
+vcenter_net_gateway: ' '
+vcenter_dns_servers: ' '
+domain: ' '
+searchpath: " "
+vcsa_size: ' '
+vcsa_ova_file: ' '
+datastore: ' '
+#datastore: ' '
+datastore_esxi01: ' '
+esxi_network: ' '
+datacenter_name: ' '
+vds_name: ' '
+vcenter_cluster: ' '
+cluster_name_edge: ' '
+cluster_name_compute: ' '
+host_folder_name_edge: ' '
+host_folder_name_compute: ' '
+vm_folder_name_infrastructure: ' '
+vm_folder_name_nsx_infrastructure: ' '
+vm_folder_name_tenant_01: ' '
+vm_folder_name_tenant_02: ' '
+
+
+## NSXT VARIABLES - DATA CENTER INFRASTRUCTURE ##
+nsxt_virtual_machine_name: " "
+nsxt_hostname: " "
+nsxt_ova_file: " " # => 3.2.0 
+
+
+nsxt_ova_size: " "
+nsxt_port_group: " "
+nsxt_audit_user: " " 
+nsxt_admin_user: " "
+nsxt_password: " "
+nsxt_ip_address: " "
+nsxt_netmask: " "
+nsxt_gateway: " "
+nsxt_role: " "
+nsxt_datacenter: " "
+nsxt_vm_folder: " "
+nsxt_compute_manager_display_name: " "
+nsxt_compute_manager_origin_type: " "
+nsxt_compute_manager_credential_type: " "
+nsxt_validate_certs: False
+nsxt_license: " "
+nsxt_ntp_server: " "
+
+## NSXT VARIABLES - INFRASTRUCTURE ##
+nsxt_transportzone_overlay_display_name: " "
+nsxt_transportzone_vlan_display_name: " "
+nsxt_edge_mtu: " "
+
+nsxt_ippool_tep_compute: " "
+nsxt_ippool_tep_edge: " "
+nsxt_named_teaming_policy_name_01: " "
+nsxt_named_teaming_policy_name_02: " "
+nsxt_teaming_policy_link01: " "
+nsxt_teaming_policy_link02: " "
+
+nsxt_transportnode_profile_name: " "
+nsxt_uplink_teaming_policies: ["TOR-1", "TOR-2"]
+nsxt_edge_nvds_name: " "
+nsxt_edge_DPG_data: " "
+nsxt_edge_DPG_management: " "
+nsxt_edge_gateway: " "
+nsxt_edge_01_name: " "
+nsxt_edge_02_name: " "
+nsxt_edge_03_name: " "
+nsxt_edge_04_name: " "
+nsxt_edge_05_name: " "
+nsxt_edge_06_name: " "
+nsxt_edge_01_display_name: " "
+nsxt_edge_02_display_name: " "
+nsxt_edge_03_display_name: " "
+nsxt_edge_04_display_name: " "
+nsxt_edge_05_display_name: " "
+nsxt_edge_06_display_name: " "
+nsxt_edge_01_ip: " "
+nsxt_edge_02_ip: " "
+nsxt_edge_03_ip: " "
+nsxt_edge_04_ip: " "
+nsxt_edge_05_ip: " "
+nsxt_edge_06_ip: " "
+nsxt_edge_cluster_01: " "
+nsxt_edge_cluster_02: " "
+nsxt_edge_cluster_03: " "
+nsxt_edge_cluster_profile: " "
+
+nsxt_transportnode_esxi02: " "
+nsxt_transportnode_esxi02_ip: " "
+nsxt_transportnode_esxi03: " "
+nsxt_transportnode_esxi03_ip: " "
+nsxt_edge_data_networks_TOR_01: " "
+nsxt_edge_data_networks_TOR_02: " "
+
+## Cumulus - INFRASTRUCTURE ##
+
+vx_01_virtual_machine_name: " "
+vx_02_virtual_machine_name: " "
+vx_03_virtual_machine_name: " "
+vx_04_virtual_machine_name: " "
+vx_spine_virtual_machine_name: " "
+vx_ova_file: ' '
+vx_management_port_group: " "
+vx_trunk_port_group: " "
+
