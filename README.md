@@ -1,14 +1,14 @@
-# vPackets - Deploy NSX-T Infrastructure - Simple Topology
+# VMware NSX-T TPM Team - Deploy NSX-T Infrastructure - Simple Topology
 
 
 
-by Nicolas MICHEL [@vpackets](https://twitter.com/vpackets) / [LinkedIn](https://www.linkedin.com/in/mclnicolas/) / [Blog](http://vpackets.net/) 
+by Nicolas MICHEL [@vpackets](https://twitter.com/vpackets) / [LinkedIn](https://www.linkedin.com/in/mclnicolas/) 
 
 _**This disclaimer informs readers that the views, thoughts, and opinions expressed in this series of posts belong solely to the author, and not necessarily to the author’s employer, organization, committee or other group or individual.**_
 
 ## Introduction
 
-The purpose of this entire repository is to automate the deployment of my NSX-T infrastructure in my lab.
+The purpose of this entire repository is to automate the deployment of an NSX-T infrastructure.
 
 ### Infrastructure Deployed
 
@@ -16,7 +16,6 @@ This repository will deploy the following virtual machines:
 
 - 1x NSX-T Manager
 - 6x NSX-T Edge
-- 5x Cumulus VX (4 Top of Rack and 1 Spine)
 ____
 
 This repository will configure the following on NSX-T:
@@ -33,7 +32,9 @@ ____
 
 ### Topology used
 
-There are multiple topologies used in this repository:
+This topology will be used in this particular example:
+
+![BGP P2P Topology](http://url/to/img.png)
 
 #### Simple Topology
 
