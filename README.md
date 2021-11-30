@@ -82,7 +82,7 @@ In this playbook Ansible will deploy and configure the following:
 Modifying the value in the answerfile is mandatory or use a secure Vault
 
 ```zsh Ansible Code
-ansible-playbook ./00-Infrastructure-NSXT/deploy-nsxt-manager.yml;
+ansible-playbook ./00-Infrastructure-NSXT/deploy-nsxt-manager.yml
 ```
 
 
@@ -93,7 +93,7 @@ In this task, vCenter will be registered to the NSX-T manager using REST API
 
 URL and Authentication need to be provided in the nsxt_parameters.py file
 
-```zsh Ansible Code
+```zsh Bash Code
 /usr/bin/python3 ./02-Configure-NSXT-Global/nsxt_infra_compute_manager_register.py
 /usr/bin/python3 ./02-Configure-NSXT-Global/nsxt_infra_compute_manager_verify.py
 ```
@@ -111,7 +111,7 @@ In this task, the following will be configured on the NSX-T Manager:
 
 Modifying the value in the answerfile is mandatory or use a secure Vault
 
-```zsh Ansible Code
+```zsh Bash Code
 ansible-playbook ./00-Infrastructure-NSXT/deploy-nsxt-infra.yml
 ```
 
@@ -129,154 +129,43 @@ In this task, the following will be configured on the NSX-T Manager:
  - Create the edge cluster profiles.
 
 
+Modifying the value in the answerfile is mandatory or use a secure Vault
+
+```zsh Bash Code
+ansible-playbook ./00-Infrastructure-NSXT/deploy-edges.yml
+```
+
+
+
+## 04 - Deploy Edges - ANSIBLE
+
+6 Edges nodes will be deployed in this topology
+
 URL and Authentication need to be provided in the nsxt_parameters.py file
 
-```zsh Ansible Code
-/usr/bin/python3 ./02-Configure-NSXT-Global/nsxt_infra_global_config.py
-/usr/bin/python3 ./02-Configure-NSXT-Global/nsxt_infra_networking_evpn_pool.py
-/usr/bin/python3 ./02-Configure-NSXT-Global/nsxt_infra_networking_bfd_profile.py
-/usr/bin/python3 ./02-Configure-NSXT-Global/nsxt_infra_edge_cluster_profiles.py
-
+```zsh Bash Code
+ansible-playbook ./00-Infrastructure-NSXT/deploy-edges.yml
 ```
 
+## 05 - Create VM Template
+
+Please refer to the following repo:  https://github.com/cloudmaniac/packer-templates
+
+## 06 - Deploy Virtual Machines
+
+Please refer to the following repo:  https://github.com/cloudmaniac/terraform-deploy-vmware-vm
 
 
 
-REST API is used to configure the following:
- - vCenter Registration to the NSX-T Manager.
- - 
 
 
 
 
 
 
-## 04 - Configure the NSX-T Uplink Profiles.
-
-2 uplink profiles will be created:
-
-- Compute:
-  - Default Teaming Policy for the TEP: PNIC-01 (uplink-1) and PNIC-02 (uplink-2)
-  - Policy: Loadbalance Src ID
-  - Vlan 110
-
-- Edge:
-  - Default Teaming Policy for the TEP: PNIC-01 (uplink-1) and PNIC-02 (uplink-2)
-  - Policy: Loadbalance Src ID
-  - Vlan 120
-  - Named Teaming Policy: 
-    - TOR-1 : 
-      - Uplink-1
-      - Failover Order
-    - TOR-2 : 
-      - Uplink-2
-      - Failover Order
-
-It is unnecessary to configure the MTU for the uplink profile as the MTU is handled at the vSphere level since we are using a VDS instead of an NVDS for the compute managers.
 
 
-## 05 - Configure IP Pools
 
-2 IP Pools are created for the TEP. One pool will be dedicated for the Compute Servers and one pool will be dedicated for the Edge Virtual Machines. It is totally supported to have all the TEPs in the same pool but I wanted to create 2 pools to demonstrate that Layer 3 between the compute and edge racks was a totally valid architecture for NSX-T
-
-## 06 - Transport Zones:
-
-2x Transport zones are created in this playbook. One transport zone is for the Overlay while the other one is a Vlan Transport zone.
-
-
-## 07 - Configure the Transport Nodes Profile:
-
-This playbook creates a Transport Node Profile for the compute hosts.
-It is necessary when you want to configure all host in a cluster so that they leverage the same template. 
-
-- Type: VDS
-- Mode: Standard
-- Compute Manager: vCenter
-- VDS: ATX-VDS
-- Transport Zone: Overlay (the compute hosts have no need to be part of the VLAN Transport Zone in this architecture)
-- Uplink Profile: UP-Compute
-- IP Assignement: 
-  - IP pool:
-    - IPPool-IPV4-TEP-COMPUTE
-- Teaming Policy
-  - uplink1 : dvUplink-1
-  - uplink2 : dvUplink-2
-
-## 08 - Configure the Transport Nodes:
-
-This playbook will instal NSX-T on all the hosts that are part of the Compute cluster.
-
-## 09 - Deploy the Edge Nodes:
-
-This playbook will install several NSX-T Edge (6) to match the architecture needs.
-
-- Form Factor: 
-  - Medium
-- Edge Switch Name: 
-  - EDGE-NVDS
-- Transport Zone:
-  - Overlay (Inter Edge - Compute Traffic)
-  - VLAN (Traffic exchanged with the physical fabric)
-- Uplink Profile:
-  - UP-Edge
-- IP Assignement:
-  - Use IP Pool
-    - IPPool-IPV4-TEP-EDGE
-- Teaming Policy
-  - Uplink-1 : DPG-TRUNK-TOR-01
-  - Uplink-2 : DPG-TRUNK-TOR-02
-
-
-DPG Trunk TOR 01 has the following Teaming configuration (vSphere related):
-- Active uplinks:
-  - dvUplink1
-- Standby uplinks:
-  - dvUplink2 
-- Unused uplinks:
-  -  dvUplink3, dvUplink4 
-
-DPG Trunk TOR 02 has the following Teaming configuration (vSphere related):
-- Active uplinks:
-  - dvUplink2
-- Standby uplinks:
-  - dvUplink1 
-- Unused uplinks:
-  -  dvUplink3, dvUplink4 
-
-## 10 - Configure the Edge Clusters on the NSX-T Manager:
-
-This playbook will group the edge nodes in pairs. The default nsx-default-edge-high-availability-profile will be used as it fulfill our needs (BFD Probe 500ms / BFD Declare dead 3)
-
-- Edge cluster 01:
-  - Edge node 01
-  - Edge node 02
-
-- Edge cluster 02:
-  - Edge node 03
-  - Edge node 04
-
-- Edge cluster 03:
-  - Edge node 05
-  - Edge node 06
-
-## 11 - Deploy Cumulus VX Top of Rack and Spine.:
-
-This playbook will deploy 5 Cumulus VX. 
-4 Cumulus VX will act as Top of Racks for the NSX-T Architecture. The remaining cumulus VX will be the Spine that will interconnect all the networks (physical and virtual).
-
-## Running the main playbook
-
-```sh
-sudo ansible-playbook deploy.yml
-```
-
-# To Do List:
-
-- Bring down the environment.
-- Readme doc with links and images
-
-## Timing
-Time on my hardware: 1 hour and 51 minutes
 
 ## Notes 
-The answerfile-json is here as an example and to check if I can improve the code using json instead of yml.
+User must configure answerfile.yml and provide credential/URL for the Python scripts to work
