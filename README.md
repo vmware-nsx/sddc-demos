@@ -15,11 +15,10 @@ The purpose of this entire repository is to automate the deployment of an NSX-T 
 This repository will deploy the following virtual machines:
 
 - 1x NSX-T Manager
-- 6x NSX-T Edge
+- 6x NSX-T Edge (4 Used in the topology + 2 unused for random testing)
 ____
 
 This repository will configure the following on NSX-T:
-
 - NSX-T: Compute Manager
 - NSX-T: License
 - NSX-T: Uplink Profiles
@@ -51,9 +50,9 @@ Tenant 01:
     - T0: Redistributing Connected routes (Service Interface / Loopback / Router link / External Interface Subnet)
     - T1: Redistributing Connected routes (Service Interface / Loopback / Router link / External Interface Subnet)
   - Tenant 01 IPv4 and IPv6 Segments :
-    - Web: 10.1.1.0/24 - beef:0010:0001:0001::/64
-    - App: 10.1.2.0/24 - beef:0010:0001:0002::/64
-    - DB : 10.1.3.0/24 - beef:0010:0001:0003::/64
+    - Web: 10.1.1.0/24 - 2001:0010:0001:0001::/64
+    - App: 10.1.2.0/24 - 2001:0010:0001:0002::/64
+    - DB : 10.1.3.0/24 - 2001:0010:0001:0003::/64
  
 
 
@@ -67,35 +66,90 @@ Tenant 02:
     - T0: Redistributing Connected routes (Service Interface / Loopback / Router link / External Interface Subnet)
     - T1: Redistributing Connected routes (Service Interface / Loopback / Router link / External Interface Subnet)
   - Tenant 01 IPv4 and IPv6 Segments :
-    - Web: 10.1.1.0/24 - beef:0010:0001:0001::/64
-    - App: 10.1.2.0/24 - beef:0010:0001:0002::/64
-    - DB : 10.1.3.0/24 - beef:0010:0001:0003::/64
+    - Web: 10.1.1.0/24 - 2001:0010:0001:0001::/64
+    - App: 10.1.2.0/24 - 2001:0010:0001:0002::/64
+    - DB : 10.1.3.0/24 - 2001:0010:0001:0003::/64
  
-
-
-### Code Tree
-
-
------
------
-
 
 
 # Deployment
 
-## 01 - Deploy NSX-T Manager
+## 01 - Deploy NSX-T Infrastructure - Ansible
 
-Only one NSX-T Manager will be deployed in this Lab environment.
+In this playbook Ansible will deploy and configure the following:
+ - One NSX-T Manager.
 
-## 02 - Configure Compute Manager
+Modifying the value in the answerfile is mandatory or use a secure Vault
 
-In the first task, the playbook will check if the vCenter is registered as a compute manager to the NSX-T Manager. Since the intent of this entire repository is to deploy a greenfield lab environment, this step is not necessary but it has been useful to run that task in some corner cases for my lab (hence why the code is still there).
+```zsh Ansible Code
+ansible-playbook ./00-Infrastructure-NSXT/deploy-nsxt-manager.yml;
+```
 
-The second task will register the vCenter as a computer manager to the NSX-T Manager.
 
-## 03 - Add a license to the NSX-T Manager.
 
-This playbook will configure a license (NSX Data Center Enterprise Plus)to the NSX-Manager.
+## 02 - vCenter Registration to the NSX-T Manager - REST API
+
+In this task, vCenter will be registered to the NSX-T manager using REST API
+
+URL and Authentication need to be provided in the nsxt_parameters.py file
+
+```zsh Ansible Code
+/usr/bin/python3 ./02-Configure-NSXT-Global/nsxt_infra_compute_manager_register.py
+/usr/bin/python3 ./02-Configure-NSXT-Global/nsxt_infra_compute_manager_verify.py
+```
+
+
+## 03 - NSX-T Basic Configuration - Ansible
+
+In this task, the following will be configured on the NSX-T Manager:
+
+ - Configure the NSX-T License
+ - Configure the IP Pool
+ - Configure the Transport Zone
+ - Confgiure the Transport node Profile
+ - Deploy NSX-T on all hypervisors in a particular cluster.
+
+Modifying the value in the answerfile is mandatory or use a secure Vault
+
+```zsh Ansible Code
+ansible-playbook ./00-Infrastructure-NSXT/deploy-nsxt-infra.yml
+```
+
+
+
+
+## 03 - NSX-T IPv6 / MTU / EVPN Pool / BFD Profile / Edge Cluster Profile
+
+In this task, the following will be configured on the NSX-T Manager:
+
+ - Enable IPv6 in NSX-T
+ - Set MTU to 9000 in NSX-T
+ - Set an EVPN Pool (for future use)
+ - Set BFD Profile for VM and BM edge nodes
+ - Create the edge cluster profiles.
+
+
+URL and Authentication need to be provided in the nsxt_parameters.py file
+
+```zsh Ansible Code
+/usr/bin/python3 ./02-Configure-NSXT-Global/nsxt_infra_global_config.py
+/usr/bin/python3 ./02-Configure-NSXT-Global/nsxt_infra_networking_evpn_pool.py
+/usr/bin/python3 ./02-Configure-NSXT-Global/nsxt_infra_networking_bfd_profile.py
+/usr/bin/python3 ./02-Configure-NSXT-Global/nsxt_infra_edge_cluster_profiles.py
+
+```
+
+
+
+
+REST API is used to configure the following:
+ - vCenter Registration to the NSX-T Manager.
+ - 
+
+
+
+
+
 
 ## 04 - Configure the NSX-T Uplink Profiles.
 
